@@ -3,6 +3,7 @@
 document.addEventListener('deviceready', onDeviceReady, false);
 
 function accedeix() {
+	$('#musics').empty();
 	let query = $('#searchContent').val();
     $.ajax({
 	  method: "GET",
@@ -10,9 +11,12 @@ function accedeix() {
 	  dataType: "json",   // necessitem això pq ens retorni un objecte JSON
 	}).done(function (msg) {
 	  for(var item in msg.artists) {
-	    console.log(msg.artists[item]);
-	    // aquí caldría fer mes coses, of course...
-	    // ...
+	  	if(msg.artists[item].disambiguation == null) {
+	  		$('#musics').append('<hr><li class="collection-item"><div><h5>'+msg.artists[item].name+'</h5>'+'<a href="#!" class="secondary-content"><hr>');
+	  	}
+	  	else{
+	  		$('#musics').append('<hr><li class="collection-item"><div><h5>'+msg.artists[item].name+'</h5>'+'Type:' +msg.artists[item].disambiguation+'<a href="#!" class="secondary-content"><hr>');
+	  	}
 	  };
 	}).fail(function () {
 		alert("ERROR");
